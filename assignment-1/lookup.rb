@@ -22,16 +22,19 @@ dns_raw = File.readlines("zone")
 # ..
 # FILL YOUR CODE HERE
 
-def parse_dns(dns_raw)
-  dns_record_hash = {}
-  dns_filter = dns_raw.reject { |l| l.start_with?("#") || l.strip.empty? }
-  dns_filter.map { |line|
+def parse_dns(raw)
+  raw.
+    reject { |line| line.empty? }.
+    map { |line| line.strip.split(", ") }.
+    reject do |record|
+    record[0] == "#"
+  end.
+    each_with_object({}) do |record, records|
     dns_hash = {}
-    dns_hash[:type] = line.split(", ")[0]
-    dns_hash[:destination] = line.split.last
-    dns_record_hash[line.split(", ")[1]] = dns_hash
-  }
-  dns_record_hash
+    dns_hash[:type] = record[0]
+    dns_hash[:destination] = record[2]
+    records[record[1]] = dns_hash
+  end
 end
 
 def resolve(dns_records, lookup_chain, domain)
