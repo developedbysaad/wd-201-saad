@@ -1,24 +1,26 @@
 require "date"
 
 class Todo
-  # ..
-  # ..
   def initialize(text, due_date, completed)
     @text = text
     @due_date = due_date
     @completed = completed
   end
 
-  # ..
-  # ..
+  # return the due date
   def due_date
     @due_date
   end
 
+  # check the status if the todo is completed
+  # check the due the date
+  # return the full string of todo having completion status, todo and due date,
+  # if the due date is today then do not print the due date
+
   def to_displayable_string
-    checkbox = (@completed == true) ? "[X]" : "[ ]"
-    check_date = (@due_date == Date.today) ? nil : @due_date
-    "#{checkbox} #{@text} #{check_date}"
+    display_status = (@completed == true) ? "[X]" : "[ ]"
+    display_date = (@due_date == Date.today) ? nil : @due_date
+    "#{display_status} #{@text} #{display_date}"
   end
 end
 
@@ -27,12 +29,13 @@ class TodosList
     @todos = todos
   end
 
+  # return the todo list according due date along with the status
+  # if it's been completed or not
+
   def overdue
     TodosList.new(@todos.filter { |todo| todo.due_date < Date.today })
   end
 
-  # ..
-  # ..
   def due_today
     TodosList.new(@todos.filter { |todo| todo.due_date == Date.today })
   end
@@ -41,13 +44,12 @@ class TodosList
     TodosList.new(@todos.filter { |todo| todo.due_date > Date.today })
   end
 
+  # made a function to add items to the list
   def add(item)
     @todos.push(item)
   end
 
-  # ..
-  # ..
-
+  # made a function to print the list if it's called
   def to_displayable_list
     @todos.map { |todo| todo.to_displayable_string }
   end

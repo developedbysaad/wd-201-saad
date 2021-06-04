@@ -18,9 +18,12 @@ domain = get_command_line_argument
 # https://www.rubydoc.info/stdlib/core/IO:readlines
 dns_raw = File.readlines("zone")
 
-# ..
-# ..
-# FILL YOUR CODE HERE
+# delete the empty lines
+# trim and put the item of input array into nested array
+# delete the lines, which is now stored in nested array,
+# if it starts with '#'
+# make a dns record with source as keys and type and
+# destination as values which are nested in another hash
 
 def parse_dns(raw)
   raw.
@@ -37,6 +40,11 @@ def parse_dns(raw)
   end
 end
 
+# If source not found push not found
+# If source is CNAME type, store its destination,
+# and also use it to find the ip address recursively
+# If source is A type store its destination
+
 def resolve(dns_records, lookup_chain, domain)
   source = dns_records[domain]
   if !source
@@ -48,9 +56,6 @@ def resolve(dns_records, lookup_chain, domain)
     lookup_chain.push(source[:destination])
   end
 end
-
-# ..
-# ..
 
 # To complete the assignment, implement `parse_dns` and `resolve`.
 # Remember to implement them above this line since in Ruby
